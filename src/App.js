@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
+import Signin from './Components/Signin'; 
+import Signup from './Components/Signup'; 
+import Footer from './Components/Footer'; 
+import Coordinator from './Components/Coordinator'; 
+import IQAView from './Components/IQAView'; 
+import Feedback from './Components/Feedback'; 
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return ( 
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />      
+          <Route path="/feedback" element={<Feedback />} /> 
+          <Route path="/coordinator" element={<Coordinator />} /> 
+          <Route path="/iqaview" element={<IQAView />} />      
+        </Routes>
+        <Footer /> 
+      </div>
+    </Router>
   );
 }
 
