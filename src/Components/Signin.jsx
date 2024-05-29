@@ -12,13 +12,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Grid from '@mui/material/Grid';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
 // Import your background image
-import backgroundImage from '../Images/240_F_713385971_sS6HoNWWyNShTfBupnKb14ig86oqGN6N.jpg';
+import backgroundImage from '../Images/240_F_713385971_sS6HoNWWyNShTfBupnKb14ig86oqGN6N.png';
 
 // MUI theme
 const theme = createTheme();
@@ -28,7 +24,6 @@ const Signin = () => {
   // State variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -41,7 +36,7 @@ const Signin = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch('http://localhost:8080/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +47,10 @@ const Signin = () => {
         const data = await response.json();
         console.log("Response from backend:", data);
         if (data.status === "success") {
+          localStorage.setItem('userId', data.userId);
+           localStorage.setItem('courseId', data.courseId);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('course', data.course);
           switch (data.role) {
             case "Student":
               navigate("/feedback");
@@ -91,11 +90,6 @@ const Signin = () => {
     setPassword(event.target.value);
   };
 
-  // Handle role change
-  const handleRoleChange = (event) => {
-    setRole(event.target.value);
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -107,10 +101,10 @@ const Signin = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          overflowY: 'auto', // Enable vertical scroll
         }}
       >
         <CssBaseline />
-
         <Box sx={{ textAlign: 'center', width: '100%', marginTop: '1rem' }}>
           <Container component="main" maxWidth="xs">
             <Box
@@ -167,23 +161,6 @@ const Signin = () => {
                   value={password}
                   onChange={handlePassword}
                 />
-                <FormControl variant="outlined" margin="normal" required fullWidth>
-                  <InputLabel id="role-label">Role</InputLabel>
-                  <Select
-                    labelId="role-label"
-                    id="role"
-                    value={role}
-                    onChange={handleRoleChange}
-                    label="Role"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value="Student">Student</MenuItem>
-                    <MenuItem value="Training Coordinator">Training Coordinator</MenuItem>
-                    <MenuItem value="IQA Coordinator">IQA Coordinator</MenuItem>
-                  </Select>
-                </FormControl>
                 <Button
                   type="submit"
                   fullWidth
@@ -205,7 +182,6 @@ const Signin = () => {
           </Container>
         </Box>
       </Box>
-
       <Snackbar
         anchorOrigin={{
           vertical: 'top',

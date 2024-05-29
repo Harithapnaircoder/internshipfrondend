@@ -1,136 +1,227 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Container,
+  CssBaseline,
+  Snackbar,
+  SnackbarContent,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
+import Navbar from './Navbar';
+import axios from 'axios'; 
+const theme = createTheme();
 
 const Feedback = () => {
   const [ratings, setRatings] = useState({
     courseRelevance: 0,
     contentDelivery: 0,
     confidence: 0,
-    trainerRating: 0
+    trainerRating: 0,
   });
 
   const [feedback, setFeedback] = useState({
     enjoyedMost: '',
-    additionalComments: ''
+    additionalComments: '',
   });
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const navigate = useNavigate();
 
   const handleRatingChange = (field, value) => {
-    setRatings(prevRatings => ({
+    setRatings((prevRatings) => ({
       ...prevRatings,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleFeedbackChange = (e) => {
     const { name, value } = e.target;
-    setFeedback(prevFeedback => ({
+    setFeedback((prevFeedback) => ({
       ...prevFeedback,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const calculateFinalScore = () => {
+    const { courseRelevance, contentDelivery, confidence, trainerRating } = ratings;
+    return (courseRelevance + contentDelivery + confidence + trainerRating) * 5; // Adjust the calculation as needed
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Thank you for your valuable feedback.');
-    navigate('https://ictkerala.org');
+    const finalScore = calculateFinalScore();
+
+    // Get course ID from local storage
+    const courseId = parseInt(localStorage.getItem('courseId'), 10);
+
+    const feedbackData = {
+      courseid: courseId,
+      relevantAndHelpful: ratings.courseRelevance,
+      clearAndUnderstandable: ratings.contentDelivery,
+      confidentInApplying: ratings.confidence,
+      trainerRating: ratings.trainerRating,
+      enjoyment: feedback.enjoyedMost,
+      additionalComments: feedback.additionalComments,
+      finalScore: finalScore,
+    };
+
+    try {
+      await axios.post('http://localhost:8080/feedback', feedbackData); // Replace with your actual backend URL
+      setSnackbarMessage('Thank you for your valuable feedback.');
+      setOpenSnackbar(true);
+      setTimeout(() => {
+        window.location.href = 'https://ictkerala.org';
+      }, 3000); // Redirect after 3 seconds
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setSnackbarMessage('Failed to submit feedback. Please try again.');
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      style={{ 
-        maxWidth: '600px', 
-        margin: '0 auto', 
-        padding: '20px', 
-        border: '1px solid #ccc', 
-        borderRadius: '10px', 
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' 
-      }}
-    >
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          The training course was relevant and helpful for me to relate.
-        </label>
-        <StarRating rating={ratings.courseRelevance} onRatingChange={(value) => handleRatingChange('courseRelevance', value)} />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          Delivery of the content was clear and understandable.
-        </label>
-        <StarRating rating={ratings.contentDelivery} onRatingChange={(value) => handleRatingChange('contentDelivery', value)} />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          I am confident in applying the learnings into practice.
-        </label>
-        <StarRating rating={ratings.confidence} onRatingChange={(value) => handleRatingChange('confidence', value)} />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          How would you rate the trainer?
-        </label>
-        <StarRating rating={ratings.trainerRating} onRatingChange={(value) => handleRatingChange('trainerRating', value)} />
-      </div>
-
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          What did you enjoy the most about the training session?
-        </label>
-        <textarea
-          name="enjoyedMost"
-          value={feedback.enjoyedMost}
-          onChange={handleFeedbackChange}
-          style={{ 
-            width: '100%', 
-            height: '80px', 
-            padding: '10px', 
-            border: '1px solid #ccc', 
-            borderRadius: '5px' 
+    <div>
+      <Navbar />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container
+          component="main"
+          maxWidth="sm"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            marginTop: 8,
+            marginBottom: 8,
           }}
-        />
-      </div>
+        >
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              backgroundColor: 'white',
+              p: 3,
+              borderRadius: 8,
+              border: '2px solid #ccc',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+              maxWidth: '600px',
+              width: '100%',
+            }}
+          >
+            <Typography component="h1" variant="h5" style={{ fontFamily: 'times new roman' }}>
+              Feedback Form
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  The training course was relevant and helpful for me to relate.
+                </Typography>
+                <StarRating
+                  rating={ratings.courseRelevance}
+                  onRatingChange={(value) => handleRatingChange('courseRelevance', value)}
+                />
+              </div>
 
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '10px' }}>
-          Any additional comments/suggestions
-        </label>
-        <textarea
-          name="additionalComments"
-          value={feedback.additionalComments}
-          onChange={handleFeedbackChange}
-          style={{ 
-            width: '100%', 
-            height: '80px', 
-            padding: '10px', 
-            border: '1px solid #ccc', 
-            borderRadius: '5px' 
-          }}
-        />
-      </div>
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  Delivery of the content was clear and understandable.
+                </Typography>
+                <StarRating
+                  rating={ratings.contentDelivery}
+                  onRatingChange={(value) => handleRatingChange('contentDelivery', value)}
+                />
+              </div>
 
-      <button 
-        type="submit" 
-        style={{ 
-          display: 'block', 
-          width: '100%', 
-          padding: '10px', 
-          backgroundColor: '#007bff', 
-          color: '#fff', 
-          border: 'none', 
-          borderRadius: '5px', 
-          cursor: 'pointer', 
-          fontSize: '16px' 
-        }}
-      >
-        Submit
-      </button>
-    </form>
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  I am confident in applying the learnings into practice.
+                </Typography>
+                <StarRating
+                  rating={ratings.confidence}
+                  onRatingChange={(value) => handleRatingChange('confidence', value)}
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  How would you rate the trainer?
+                </Typography>
+                <StarRating
+                  rating={ratings.trainerRating}
+                  onRatingChange={(value) => handleRatingChange('trainerRating', value)}
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  What did you enjoy the most about the training session?
+                </Typography>
+                <TextField
+                  name="enjoyedMost"
+                  value={feedback.enjoyedMost}
+                  onChange={handleFeedbackChange}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <Typography variant="body1" gutterBottom>
+                  Any additional comments/suggestions
+                </Typography>
+                <TextField
+                  name="additionalComments"
+                  value={feedback.additionalComments}
+                  onChange={handleFeedbackChange}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={handleSnackbarClose}
+        >
+          <SnackbarContent
+            sx={{ backgroundColor: 'green' }}
+            message={snackbarMessage}
+          />
+        </Snackbar>
+      </ThemeProvider>
+    </div>
   );
 };
 
@@ -152,7 +243,7 @@ const StarRating = ({ rating, onRatingChange }) => {
               style={{ display: 'none' }}
             />
             <FaStar
-              color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
+              color={ratingValue <= (hover || rating) ? '#ffc107' : '#e4e5e9'}
               size={25}
               onMouseEnter={() => setHover(ratingValue)}
               onMouseLeave={() => setHover(0)}

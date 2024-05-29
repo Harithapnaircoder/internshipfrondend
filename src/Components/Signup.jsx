@@ -18,7 +18,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 // Import your background image
-import backgroundImage from '../Images/240_F_713384947_2VHJrosuTXjjNrxchEeW52iTesZ19JyK.jpg';
+import backgroundImage from '../Images/240_F_713384947_2VHJrosuTXjjNrxchEeW52iTesZ19JyK.png';
 
 // Create MUI theme
 const theme = createTheme();
@@ -30,12 +30,15 @@ const SignUp = () => {
     email: '',
     password: '',
     role: '',
+    course: '',
   });
 
   const [errors, setErrors] = useState({
     fullname: false,
     email: false,
+    password: false,
     role: false,
+    course: false,
   });
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -44,7 +47,11 @@ const SignUp = () => {
   // Handle input change in form fields
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+      ...(name === 'role' && value !== 'Student' ? { course: '' } : {}),
+    }));
 
     // Remove validation error and red border when typing
     setErrors({ ...errors, [name]: false });
@@ -55,15 +62,19 @@ const SignUp = () => {
     event.preventDefault();
 
     // Form validation
-    const { fullname, email, password, role } = formData;
-    if (!fullname || !email || !password || !role) {
+    const { fullname, email, password, role, course } = formData;
+    const newErrors = {
+      fullname: !fullname,
+      email: !email,
+      password: !password,
+      role: !role,
+      course: role === 'Student' && !course,
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error)) {
       console.error('All fields are mandatory');
-      // Set errors for empty fields
-      setErrors({
-        fullname: !fullname,
-        email: !email,
-        role: !role,
-      });
       return;
     }
 
@@ -86,6 +97,7 @@ const SignUp = () => {
           email: '',
           password: '',
           role: '',
+          course: '',
         });
         setTimeout(() => {
           setOpenSnackbar(false);
@@ -104,40 +116,39 @@ const SignUp = () => {
   };
 
   return (
-    <div className='row'>
-      <div className="col-9 col-md-9">
+    <div className="row">
+      <div className="col-12 col-md-12">
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Box
             sx={{
-              backgroundImage: `url(${backgroundImage})`, 
+              backgroundImage: `url(${backgroundImage})`,
               backgroundSize: 'cover',
               minHeight: '100vh',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
+              overflowX: 'auto', // Enable horizontal scroll
             }}
           >
             <Container component="main" maxWidth="xs">
-            <Box
-  sx={{
-    backgroundColor: 'white',
-    p: 3,
-    borderRadius: 8,
-    border: '2px solid #ccc',
-    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: '90px', // Increased margin-top
-    marginBottom: '250px', // Increased margin-bottom
-    maxWidth: '340px',
-    width: '100%',
-    margin: 'auto',
-  }}
->
-
+              <Box
+                sx={{
+                  backgroundColor: 'white',
+                  p: 3,
+                  borderRadius: 8,
+                  border: '2px solid #ccc',
+                  boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  marginTop: '90px',
+                  marginBottom: '90px',
+                  maxWidth: '340px',
+                  width: '100%',
+                }}
+              >
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                   <LockOutlinedIcon />
                 </Avatar>
@@ -165,7 +176,7 @@ const SignUp = () => {
                         autoComplete="off"
                         sx={{
                           '& label.Mui-focused': { color: 'black' },
-                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } }
+                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
                         }}
                       />
                     </Grid>
@@ -183,7 +194,7 @@ const SignUp = () => {
                         autoComplete="off"
                         sx={{
                           '& label.Mui-focused': { color: 'black' },
-                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } }
+                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
                         }}
                       />
                     </Grid>
@@ -191,6 +202,7 @@ const SignUp = () => {
                       <TextField
                         required
                         fullWidth
+                        error={errors.password}
                         name="password"
                         label="Password"
                         type="password"
@@ -200,12 +212,20 @@ const SignUp = () => {
                         autoComplete="off new-password"
                         sx={{
                           '& label.Mui-focused': { color: 'black' },
-                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } }
+                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
                         }}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControl variant="outlined" margin="normal" required fullWidth>
+                      <FormControl
+                        required
+                        fullWidth
+                        error={errors.role}
+                        sx={{
+                          '& label.Mui-focused': { color: 'black' },
+                          '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
+                        }}
+                      >
                         <InputLabel id="role-label">Role</InputLabel>
                         <Select
                           labelId="role-label"
@@ -224,6 +244,40 @@ const SignUp = () => {
                         </Select>
                       </FormControl>
                     </Grid>
+                    {formData.role === 'Student' && (
+                      <Grid item xs={12} sx={{ mt: 2 }}> {/* Added margin top to create distance */}
+                        <FormControl
+                          required
+                          fullWidth
+                          error={errors.course}
+                          sx={{
+                            '& label.Mui-focused': { color: 'black' },
+                            '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
+                          }}
+                        >
+                          <InputLabel id="course-label">Course</InputLabel>
+                          <Select
+                            labelId="course-label"
+                            id="course"
+                            name="course"
+                            value={formData.course}
+                            onChange={handleChange}
+                            label="Course"
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value="Certified Specialist in Full Stack Development (MEAN)">Certified Specialist in Full Stack Development (MEAN)</MenuItem>
+                            <MenuItem value="Certified Specialist in Artificial Intelligence & Machine Learning">Certified Specialist in Artificial Intelligence & Machine Learning</MenuItem>
+                            <MenuItem value="Certified Specialist in Full Stack Development (Java)">Certified Specialist in Full Stack Development (Java)</MenuItem>
+                            <MenuItem value="Certified Specialist in Data Science & Analytics">Certified Specialist in Data Science & Analytics</MenuItem>
+                            <MenuItem value="Certified Cybersecurity Analyst">Certified Cybersecurity Analyst</MenuItem>
+                            <MenuItem value="Certified Specialist in 2D/3D Game Engineering">Certified Specialist in 2D/3D Game Engineering</MenuItem>
+                            <MenuItem value="Certified Specialist in Full Stack Development (.NET)">Certified Specialist in Full Stack Development (.NET)</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    )}
                   </Grid>
                   <Button
                     type="submit"
