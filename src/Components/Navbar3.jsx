@@ -20,21 +20,13 @@ const NavLink = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const Navbar2 = () => {
+const Navbar3 = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static" sx={{ backgroundColor: '#009688' }}>
         <Toolbar sx={{ justifyContent: 'flex-end' }}>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <NavLink component={RouterLink} to="/coordinator" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Home
-            </NavLink>
-            <NavLink component={RouterLink} to="/course" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Add Course
-            </NavLink>
-            <NavLink component={RouterLink} to="/alter" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Update/Delete
-            </NavLink>
+           
             <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               Logout
             </NavLink>
@@ -45,4 +37,4 @@ const Navbar2 = () => {
   );
 };
 
-export default Navbar2;
+export default Navbar3;

@@ -64,8 +64,8 @@ const Alter = () => {
 
   const handleUpdateSubmit = async () => {
     try {
-      if (currentCourse && currentCourse.courseId) { // Corrected property name to courseId
-        const response = await fetch(`http://localhost:8080/course/${currentCourse.courseId}`, { // Corrected endpoint URL
+      if (currentCourse && currentCourse.courseId) { 
+        const response = await fetch(`http://localhost:8080/course/${currentCourse.courseId}`, { 
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -141,13 +141,13 @@ const Alter = () => {
                     <Typography variant="body2" style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>Final Feedback: {course.finalFeedback}</Typography>
                   </CardContent>
                   <Box display="flex" justifyContent="space-between" p={2}>
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: 'green', '&:hover': { backgroundColor: 'darkgreen' } }}
-                      onClick={() => handleUpdateClick(course)}
-                    >
-                      Update
-                    </Button>
+                  <Button
+  variant="contained"
+  sx={{ backgroundColor: 'indigo', '&:hover': { backgroundColor: 'darkindigo' } }}
+  onClick={() => handleUpdateClick(course)}
+>
+  Update
+</Button>
                    <Button
   variant="contained"
   sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}
@@ -264,7 +264,12 @@ const Alter = () => {
         </Dialog>
       )}
 
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Added this line to set the position
+      >
         <MuiAlert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%', backgroundColor: 'green', color: 'white' }}>
           {snackbarMessage}
         </MuiAlert>

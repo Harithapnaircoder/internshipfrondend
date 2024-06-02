@@ -14,7 +14,7 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 import Grid from '@mui/material/Grid';
 
 // Import your background image
-import backgroundImage from '../Images/240_F_713385971_sS6HoNWWyNShTfBupnKb14ig86oqGN6N.png';
+import backgroundImage from '../Images/istockphoto-1294603953-612x612.jpg';
 
 // MUI theme
 const theme = createTheme();

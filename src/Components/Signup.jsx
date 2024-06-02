@@ -18,7 +18,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 // Import your background image
-import backgroundImage from '../Images/240_F_713384947_2VHJrosuTXjjNrxchEeW52iTesZ19JyK.png';
+import backgroundImage from '../Images/istockphoto-1086026926-612x612.jpg';
 
 // Create MUI theme
 const theme = createTheme();
@@ -235,10 +235,11 @@ const SignUp = () => {
                           onChange={handleChange}
                           label="Role"
                         >
-                          <MenuItem value="">
+                          <MenuItem
+                            value="">
                             <em>None</em>
                           </MenuItem>
-                          <MenuItem value="Student">Student</MenuItem>
+                          <MenuItem value="Student">Participant</MenuItem>
                           <MenuItem value="Training Coordinator">Training Coordinator</MenuItem>
                           <MenuItem value="IQA Coordinator">IQA Coordinator</MenuItem>
                         </Select>
@@ -246,36 +247,22 @@ const SignUp = () => {
                     </Grid>
                     {formData.role === 'Student' && (
                       <Grid item xs={12} sx={{ mt: 2 }}> {/* Added margin top to create distance */}
-                        <FormControl
+                        <TextField
                           required
                           fullWidth
                           error={errors.course}
+                          name="course"
+                          label="Course"
+                          type="text"
+                          id="course"
+                          value={formData.course}
+                          onChange={handleChange}
+                          autoComplete="off"
                           sx={{
                             '& label.Mui-focused': { color: 'black' },
                             '& .MuiOutlinedInput-root': { '&.Mui-focused fieldset': { borderColor: 'black' } },
                           }}
-                        >
-                          <InputLabel id="course-label">Course</InputLabel>
-                          <Select
-                            labelId="course-label"
-                            id="course"
-                            name="course"
-                            value={formData.course}
-                            onChange={handleChange}
-                            label="Course"
-                          >
-                            <MenuItem value="">
-                              <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="Certified Specialist in Full Stack Development (MEAN)">Certified Specialist in Full Stack Development (MEAN)</MenuItem>
-                            <MenuItem value="Certified Specialist in Artificial Intelligence & Machine Learning">Certified Specialist in Artificial Intelligence & Machine Learning</MenuItem>
-                            <MenuItem value="Certified Specialist in Full Stack Development (Java)">Certified Specialist in Full Stack Development (Java)</MenuItem>
-                            <MenuItem value="Certified Specialist in Data Science & Analytics">Certified Specialist in Data Science & Analytics</MenuItem>
-                            <MenuItem value="Certified Cybersecurity Analyst">Certified Cybersecurity Analyst</MenuItem>
-                            <MenuItem value="Certified Specialist in 2D/3D Game Engineering">Certified Specialist in 2D/3D Game Engineering</MenuItem>
-                            <MenuItem value="Certified Specialist in Full Stack Development (.NET)">Certified Specialist in Full Stack Development (.NET)</MenuItem>
-                          </Select>
-                        </FormControl>
+                        />
                       </Grid>
                     )}
                   </Grid>

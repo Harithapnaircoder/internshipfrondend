@@ -52,16 +52,16 @@ const Feedback = () => {
 
   const calculateFinalScore = () => {
     const { courseRelevance, contentDelivery, confidence, trainerRating } = ratings;
-    return (courseRelevance + contentDelivery + confidence + trainerRating) * 5; // Adjust the calculation as needed
+    return (courseRelevance + contentDelivery + confidence + trainerRating) * 5; 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const finalScore = calculateFinalScore();
-
+  
     // Get course ID from local storage
     const courseId = parseInt(localStorage.getItem('courseId'), 10);
-
+  
     const feedbackData = {
       courseid: courseId,
       relevantAndHelpful: ratings.courseRelevance,
@@ -72,13 +72,13 @@ const Feedback = () => {
       additionalComments: feedback.additionalComments,
       finalScore: finalScore,
     };
-
+  
     try {
-      await axios.post('http://localhost:8080/feedback', feedbackData); // Replace with your actual backend URL
+      await axios.post('http://localhost:8080/feedback', feedbackData); 
       setSnackbarMessage('Thank you for your valuable feedback.');
       setOpenSnackbar(true);
       setTimeout(() => {
-        window.location.href = 'https://ictkerala.org';
+        window.open('https://ictkerala.org', '_blank'); // Open in new tab
       }, 3000); // Redirect after 3 seconds
     } catch (error) {
       console.error('Error submitting feedback:', error);
@@ -86,7 +86,7 @@ const Feedback = () => {
       setOpenSnackbar(true);
     }
   };
-
+  
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
@@ -119,16 +119,21 @@ const Feedback = () => {
               borderRadius: 8,
               border: '2px solid #ccc',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-              maxWidth: '600px',
+              maxWidth: '500px',
               width: '100%',
             }}
           >
-            <Typography component="h1" variant="h5" style={{ fontFamily: 'times new roman' }}>
-              Feedback Form
-            </Typography>
+          <Typography 
+  component="h1" 
+  variant="h5" 
+  sx={{ fontFamily: 'times new roman', fontWeight: 'bold' }}
+>
+  Feedback Form
+</Typography>
+<br />
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <div style={{ marginBottom: '20px' }}>
-                <Typography variant="body1" gutterBottom>
+                <Typography variant="body1" gutterBottom >
                   The training course was relevant and helpful for me to relate.
                 </Typography>
                 <StarRating

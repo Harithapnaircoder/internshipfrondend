@@ -52,7 +52,7 @@ const Coordinator = () => {
   return (
     <div>
       <Navbar2 />
-      <h1 style={{ textAlign: 'center' }}>Training Coordinator</h1>
+      <h1 style={{ textAlign: 'center', fontFamily:'times new roman' }}>Training Coordinator</h1>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
         <div style={{ width: '90%', height: '500px', overflowY: 'auto', border: '1px solid #ddd', padding: '10px' }}>
           <FormControl style={{ width: '200px' }}>
