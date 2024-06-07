@@ -47,13 +47,19 @@ const Signin = () => {
         const data = await response.json();
         console.log("Response from backend:", data);
         if (data.status === "success") {
-          localStorage.setItem('userId', data.userId);
-           localStorage.setItem('courseId', data.courseId);
-          localStorage.setItem('role', data.role);
-          localStorage.setItem('course', data.course);
+          sessionStorage.setItem('userId', data.userId);
+          sessionStorage.setItem('role', data.role);
+          sessionStorage.setItem('courses', JSON.stringify(data.courses));
+  
+          // Save courseId if the user is a student
+          if (data.role === "Student" && data.courses && data.courses.length > 0) {
+            const courseId = data.courses[0].courseId; // Assuming only one course for now
+            sessionStorage.setItem('courseId', courseId);
+          }
+  
           switch (data.role) {
             case "Student":
-              navigate("/feedback");
+              navigate("/usercourse");
               break;
             case "Training Coordinator":
               navigate("/coordinator");
@@ -79,7 +85,7 @@ const Signin = () => {
       setOpenSnackbar(true);
     }
   };
-
+  
   // Handle email change 
   const handleEmail = (event) => {
     setEmail(event.target.value);

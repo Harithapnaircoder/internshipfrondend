@@ -97,9 +97,9 @@ const Course = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: '100vh', // Ensure full height to center vertically
-          marginTop: 18, // Add margin top to create some space from the top
-          marginBottom: 8, // Add margin bottom to create some space at the bottom
+          minHeight: '100vh',
+          marginTop: 18, 
+          marginBottom: 8, 
         }}
       >
         <Box
@@ -115,11 +115,11 @@ const Course = () => {
             boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
             maxWidth: '370px',
             width: '100%',
-            margin: 'auto', // Center horizontally
+            margin: 'auto',
           }}
         >
           <Typography component="h1" variant="h5" style={{fontFamily:'times new roman'}}>
-            New Course
+         <strong>Add New Course</strong>   
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             

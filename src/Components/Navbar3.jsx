@@ -26,7 +26,9 @@ const Navbar3 = () => {
     <AppBar position="static" sx={{ backgroundColor: '#009688' }}>
         <Toolbar sx={{ justifyContent: 'flex-end' }}>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
-           
+          <NavLink component={RouterLink} to="/usercourse" style={{ textDecoration: 'none', color: 'inherit' }}>
+             Home
+            </NavLink>
             <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
               Logout
             </NavLink>

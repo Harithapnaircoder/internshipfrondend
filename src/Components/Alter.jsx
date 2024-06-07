@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar2 from './Navbar2';
 import { Card, CardContent, Typography, Button, Grid, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
+import Pagination from '@mui/material/Pagination';
 
 const Alter = () => {
   const [courses, setCourses] = useState([]);
@@ -9,6 +10,8 @@ const Alter = () => {
   const [currentCourse, setCurrentCourse] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const coursesPerPage = 3; // Display 3 cards per page
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -117,6 +120,14 @@ const Alter = () => {
     setSnackbarOpen(false);
   };
 
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastCourse = currentPage * coursesPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+  const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
+
   return (
     <div>
       <Navbar2 />
@@ -124,11 +135,25 @@ const Alter = () => {
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
         <div style={{ width: '90%', padding: '10px' }}>
           <Grid container spacing={3}>
-            {courses.map((course) => (
-              <Grid item xs={12} sm={6} md={3} key={course.courseId}> 
+            {currentCourses.map((course) => (
+              <Grid item xs={12} sm={4} key={course.courseId}> 
                 <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', textAlign: 'center' }}>
                   <CardContent style={{ flexGrow: 1 }}>
-                    <Typography variant="h6" style={{ fontWeight: 'bold', fontFamily: 'Times New Roman', fontSize: '22px' }}>{course.courseName}</Typography>
+                    <Typography 
+                      variant="h6" 
+                      style={{ 
+                        fontWeight: 'bold', 
+                        fontFamily: 'Times New Roman', 
+                        fontSize: '22px', 
+                        textTransform: 'uppercase',
+                        height: '3em', // Fixed height for uniformity
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      {course.courseName}
+                    </Typography>
                     <br />
                     <Typography variant="body2" style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>Course id: {course.courseId}</Typography>
                     <Typography variant="body2" style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>OU: {course.ou}</Typography>
@@ -141,27 +166,33 @@ const Alter = () => {
                     <Typography variant="body2" style={{ fontFamily: 'Times New Roman', fontSize: '18px' }}>Final Feedback: {course.finalFeedback}</Typography>
                   </CardContent>
                   <Box display="flex" justifyContent="space-between" p={2}>
-                  <Button
-  variant="contained"
-  sx={{ backgroundColor: 'indigo', '&:hover': { backgroundColor: 'darkindigo' } }}
-  onClick={() => handleUpdateClick(course)}
->
-  Update
-</Button>
-                   <Button
-  variant="contained"
-  sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}
-  onClick={() => handleDelete(course.courseId)}
->
-  Delete
-</Button>
-
-
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: 'indigo', '&:hover': { backgroundColor: 'darkindigo' } }}
+                      onClick={() => handleUpdateClick(course)}
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: 'red', '&:hover': { backgroundColor: 'darkred' } }}
+                      onClick={() => handleDelete(course.courseId)}
+                    >
+                      Delete
+                    </Button>
                   </Box>
                 </Card>
               </Grid>
             ))}
           </Grid>
+          <Box display="flex" justifyContent="center" mt={2} mb={4}>
+            <Pagination
+              count={Math.ceil(courses.length / coursesPerPage)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </Box>
         </div>
       </div>
 
@@ -268,7 +299,7 @@ const Alter = () => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Added this line to set the position
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <MuiAlert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%', backgroundColor: 'green', color: 'white' }}>
           {snackbarMessage}

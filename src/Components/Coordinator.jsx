@@ -50,13 +50,13 @@ const Coordinator = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
       <Navbar2 />
-      <h1 style={{ textAlign: 'center', fontFamily:'times new roman' }}>Training Coordinator</h1>
+      <h1 style={{ textAlign: 'center', fontFamily: 'Times New Roman' }}>Training Coordinator</h1>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '20px' }}>
-        <div style={{ width: '90%', height: '500px', overflowY: 'auto', border: '1px solid #ddd', padding: '10px' }}>
+        <div style={{ width: '90%', height: 'calc(100vh - 200px)', overflowY: 'auto', border: '1px solid #ddd', padding: '10px', backgroundColor: 'white' }}>
           <FormControl style={{ width: '200px' }}>
-            <InputLabel>OU</InputLabel>
+            <InputLabel>OU filtering</InputLabel>
             <Select value={ou} onChange={(e) => setOu(e.target.value)}>
               <MenuItem value="Academic">Academic</MenuItem>
               <MenuItem value="Corporate">Corporate</MenuItem>
@@ -80,22 +80,23 @@ const Coordinator = () => {
             </thead>
             <tbody>
               {courses.map((course) => (
-                <tr key={course.id} style={{ backgroundColor: '#fff', fontFamily: 'Times New Roman', textAlign: 'center' }}>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.courseName}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.ou}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.trainingType}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{formatDate(course.startDate)}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{formatDate(course.endDate)}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.batchCount}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.trainerName}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.status}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px', fontWeight: 'normal' }}>{course.finalFeedback}</td>
+                <tr key={course.id} style={{ backgroundColor: '#fff', fontFamily: 'Times New Roman', textAlign: 'center', transition: 'background-color 0.3s' }} onMouseOver={(e) => e.target.style.backgroundColor = '#F0F0F0'} onMouseOut={(e) => e.target.style.backgroundColor = '#fff'}>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.courseName}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.ou}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.trainingType}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(course.startDate)}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(course.endDate)}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.batchCount}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.trainerName}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.status}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{course.finalFeedback}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      <div style={{ height: '20px' }}></div>
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}

@@ -8,6 +8,7 @@ import IQAView from './Components/IQAView';
 import Feedback from './Components/Feedback'; 
 import Course from './Components/Course';
 import Alter from './Components/Alter';
+import Usercourse from './Components/Usercourse';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/iqaview" element={<IQAView />} /> 
           <Route path="/course" element={<Course />} /> 
           <Route path="/alter" element={<Alter />} /> 
+          <Route path="/usercourse" element={<Usercourse />} /> 
         </Routes>
         <Footer /> 
       </div>

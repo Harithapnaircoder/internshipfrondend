@@ -22,12 +22,13 @@ const NavLink = styled(Typography)(({ theme }) => ({
 }));
 export default function Navbar() {
   return (
+    
     <Box sx={{ flexGrow: 1, width: '100%', position: 'fixed', zIndex: '100', top: 0 }}>
       <AppBar position="static" sx={{ bgcolor: 'primary' }}>
         <Toolbar sx={{ width: '100%' }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', width: '100%' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>        
-              
+           
                <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 Logout
               </NavLink>
