@@ -16,7 +16,7 @@ const NavLink = styled(Typography)(({ theme }) => ({
 
   '&:hover': {
     textDecoration: 'underline',
-    borderColor: 'white', // Change border color on hover
+    borderColor: 'white', 
   },
 }));
 
@@ -27,16 +27,16 @@ const Navbar2 = () => {
         <Toolbar sx={{ justifyContent: 'flex-end' }}>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
             <NavLink component={RouterLink} to="/coordinator" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Home
+             <i>Home</i> 
             </NavLink>
             <NavLink component={RouterLink} to="/course" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Add Course
+             <i>Add Course</i>
             </NavLink>
             <NavLink component={RouterLink} to="/alter" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Update/Delete
+            <i>Update/Delete</i>  
             </NavLink>
             <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Logout
+              <i>Logout</i>
             </NavLink>
           </Box>
         </Toolbar>

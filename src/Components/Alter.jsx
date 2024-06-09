@@ -11,8 +11,7 @@ const Alter = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const coursesPerPage = 3; // Display 3 cards per page
-
+  const coursesPerPage = 3; 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -146,7 +145,7 @@ const Alter = () => {
                         fontFamily: 'Times New Roman', 
                         fontSize: '22px', 
                         textTransform: 'uppercase',
-                        height: '3em', // Fixed height for uniformity
+                        height: '3em', 
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'

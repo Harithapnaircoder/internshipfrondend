@@ -13,26 +13,26 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Grid from '@mui/material/Grid';
 
-// Import your background image
+
 import backgroundImage from '../Images/istockphoto-1294603953-612x612.jpg';
 
-// MUI theme
+
 const theme = createTheme();
 
 const Signin = () => {
   const navigate = useNavigate();
-  // State variables
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // Handle close Snackbar
+  
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
 
-  // Handle form submission
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -51,9 +51,9 @@ const Signin = () => {
           sessionStorage.setItem('role', data.role);
           sessionStorage.setItem('courses', JSON.stringify(data.courses));
   
-          // Save courseId if the user is a student
+      
           if (data.role === "Student" && data.courses && data.courses.length > 0) {
-            const courseId = data.courses[0].courseId; // Assuming only one course for now
+            const courseId = data.courses[0].courseId; 
             sessionStorage.setItem('courseId', courseId);
           }
   
@@ -86,12 +86,12 @@ const Signin = () => {
     }
   };
   
-  // Handle email change 
+  
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
 
-  // Handle password change
+ 
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
@@ -107,7 +107,7 @@ const Signin = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          overflowY: 'auto', // Enable vertical scroll
+          overflowY: 'auto', 
         }}
       >
         <CssBaseline />

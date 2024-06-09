@@ -12,12 +12,12 @@ const NavLink = styled(Typography)(({ theme }) => ({
   fontSize: '1rem',
   padding: theme.spacing(1),
   textDecoration: 'none',
-  border: '1px solid transparent', // border
-  transition: 'border-color 0.3s ease-in-out', // hover effect
+  border: '1px solid transparent', 
+  transition: 'border-color 0.3s ease-in-out', 
 
   '&:hover': {
     textDecoration: 'underline',
-    borderColor: 'white', // Change border color on hover
+    borderColor: 'white', 
   },
 }));
 export default function Navbar() {
@@ -30,11 +30,9 @@ export default function Navbar() {
             <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>        
            
                <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                Logout
+               <i>Logout</i> 
               </NavLink>
-              <NavLink component={RouterLink} to="/course" style={{ textDecoration: 'none', color: 'inherit' }}>
-               
-              </NavLink>
+             
             </Box>
             <Box>
               <NavLink component={RouterLink} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>            

@@ -34,7 +34,7 @@ const Coordinator = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, [ou]); // Fetch courses when `ou` changes
+  }, [ou]); 
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {

@@ -17,14 +17,14 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-// Import your background image
+
 import backgroundImage from '../Images/istockphoto-1086026926-612x612.jpg';
 
-// Create MUI theme
+
 const theme = createTheme();
 
 const SignUp = () => {
-  // State variables for form data, errors, and snackbar
+ 
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -44,7 +44,7 @@ const SignUp = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  // Handle input change in form fields
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
@@ -53,15 +53,15 @@ const SignUp = () => {
       ...(name === 'role' && value !== 'Student' ? { course: '' } : {}),
     }));
 
-    // Remove validation error and red border when typing
+    
     setErrors({ ...errors, [name]: false });
   };
 
-  // Handle form submission
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Form validation
+    
     const { fullname, email, password, role, course } = formData;
     const newErrors = {
       fullname: !fullname,
@@ -91,7 +91,7 @@ const SignUp = () => {
         console.log('Signup successful!');
         setSnackbarMessage('Signup successful');
         setOpenSnackbar(true);
-        // Clear form fields
+        
         setFormData({
           fullname: '',
           email: '',
@@ -110,7 +110,7 @@ const SignUp = () => {
     }
   };
 
-  // Handle snackbar close
+  
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
@@ -129,7 +129,7 @@ const SignUp = () => {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              overflowX: 'auto', // Enable horizontal scroll
+              overflowX: 'auto', 
             }}
           >
             <Container component="main" maxWidth="xs">

@@ -33,12 +33,12 @@ const Feedback = () => {
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [courseId, setCourseId] = useState(null); // State to store courseId
+  const [courseId, setCourseId] = useState(null); 
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch courseId from sessionStorage on component mount
+  
     const storedCourseId = sessionStorage.getItem('courseId');
     setCourseId(parseInt(storedCourseId, 10));
   }, []);
@@ -83,8 +83,20 @@ const Feedback = () => {
       setSnackbarMessage('Thank you for your valuable feedback.');
       setOpenSnackbar(true);
       setTimeout(() => {
-        window.location.href = 'https://ictkerala.org';
-      }, 3000); // Redirect after 3 seconds
+        window.open('https://ictkerala.org', '_blank');
+        setRatings({
+          courseRelevance: 0,
+          contentDelivery: 0,
+          confidence: 0,
+          trainerRating: 0,
+        });
+        setFeedback({
+          enjoyedMost: '',
+          additionalComments: '',
+        });
+      }, 3000); 
+  
+     
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setSnackbarMessage('Failed to submit feedback. Please try again.');
@@ -96,7 +108,7 @@ const Feedback = () => {
     setOpenSnackbar(false);
   };
 
-  console.log('Course ID:', courseId); // Log courseId
+  
 
   return (
     <div>
@@ -126,7 +138,7 @@ const Feedback = () => {
               borderRadius: 8,
               border: '2px solid #ccc',
               boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-              maxWidth: '600px', // Adjusted maxWidth
+              maxWidth: '600px', 
               width: '100%',
             }}
           >

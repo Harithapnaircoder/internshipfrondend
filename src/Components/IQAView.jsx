@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Make sure axios is installed in your project
+import axios from 'axios';
 import Navbar3 from './Navbar3';
 
 const IQAView = () => {
@@ -11,14 +11,27 @@ const IQAView = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:8080/latest');
-        setData(response.data);
+        const fetchedData = response.data;
+
+        
+        const courseMap = new Map();
+        
+        fetchedData.forEach(item => {
+          const existingItem = courseMap.get(item.courseId);
+          if (!existingItem || item.finalFeedback > existingItem.finalFeedback) {
+            courseMap.set(item.courseId, item);
+          }
+        });
+
+      
+        setData(Array.from(courseMap.values()));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array to run the effect only once on component mount
+  }, []);
 
   const handleButtonClick = async (courseId) => {
     try {
@@ -37,18 +50,21 @@ const IQAView = () => {
     setError(null);
   };
 
-  // Sort the data array by courseId in ascending order numerically
-  const sortedData = data.sort((a, b) => Number(a.courseId) - Number(b.courseId));
+ 
+  const sortedData = data
+    .sort((a, b) => Number(a.courseId) - Number(b.courseId))
+    .map((item, index) => ({ ...item, id: index + 1 }));
 
   return (
     <>
       <Navbar3 />
       <div style={{ margin: '20px', position: 'relative' }}>
-        <h1 style={{ fontFamily: 'Times New Roman' }}>IQA Coordinator page</h1>
-        <div style={{ maxHeight: '400px', overflowY: 'auto' }}> {/* Added container for vertical scroll */}
+        <h1 style={{ fontFamily: 'Times New Roman', textAlign: 'center' }}>IQA Coordinator page</h1>
+        <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
           <table style={{ borderCollapse: 'collapse', width: '100%', fontFamily: 'Times New Roman', filter: courseDetails ? 'blur(5px)' : 'none', pointerEvents: courseDetails ? 'none' : 'auto' }}>
             <thead>
-              <tr>
+              <tr style={{ position: 'sticky', top: 0, backgroundColor: '#333', zIndex: 1 }}>
+                <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#333', color: '#fff' }}>ID</th>
                 <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#333', color: '#fff' }}>Course ID</th>
                 <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#333', color: '#fff' }}>Course Name</th>
                 <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#333', color: '#fff' }}>Status</th>
@@ -59,6 +75,7 @@ const IQAView = () => {
             <tbody>
               {sortedData.map((item, index) => (
                 <tr key={index}>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{item.id}</td>
                   <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{item.courseId}</td>
                   <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{item.courseName}</td>
                   <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{item.status}</td>
@@ -71,6 +88,7 @@ const IQAView = () => {
             </tbody>
           </table>
         </div>
+
         {courseDetails && (
           <div style={{
             position: 'fixed',
@@ -81,11 +99,11 @@ const IQAView = () => {
             padding: '20px',
             boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
             zIndex: 1000,
-            width: '40%', // Reduced width
+            width: '40%', 
             borderRadius: '10px',
             fontFamily: 'Times New Roman',
             textAlign: 'center',
-            fontSize: '18px' // Increased text size
+            fontSize: '18px'
           }}>
             <h2>Course Details</h2>
             <p><strong>Course ID:</strong> {courseDetails.courseId}</p>

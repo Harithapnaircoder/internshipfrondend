@@ -37,7 +37,7 @@ const Usercourse = () => {
                 transform: 'scale(1.05)',
               },
               textAlign: 'center', 
-              width: '300px', 
+              width: '400px', 
               height: '350px', 
               marginTop: '20px', 
             }}
@@ -74,13 +74,6 @@ const Usercourse = () => {
             {course.status.toLowerCase() === 'completed' && (
               <Link to="/feedback" style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center', margin: '1rem' }}>
       <Button variant="contained" color="primary">Give Feedback</Button>
-
-
-
-
-
-
-
               </Link>
             )}
           </Card>
